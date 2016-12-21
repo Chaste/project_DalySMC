@@ -1,0 +1,42 @@
+# Run model to steady-state then provide stimulation sufficient to trigger an
+# action potential in the reported parameterization.
+
+namespace oxmeta = "https://chaste.comlab.ox.ac.uk/cellml/ns/oxford-metadata#"
+namespace aidan = "urn:aidan#"
+
+inputs {
+    sim_time = 500
+    step_size = 0.25
+}
+
+import std = "BasicLibrary.txt"
+import cardiac = "CardiacLibrary.txt"
+
+units {
+    mV = milli volt
+    ms = milli second
+    mV_per_ms = milli volt . milli second^-1
+}
+
+model interface {
+    input oxmeta:time units ms = 0
+
+    output oxmeta:membrane_voltage units mV
+    output oxmeta:time units ms # Needed to stop solver falling over
+    output oxmeta:state_variable
+}
+
+tasks {
+    # Run simulation for specified period of time
+    simulation sim = timecourse {
+        range time units ms uniform 0:0.25:sim_time
+        modifiers {
+        }
+    }
+}
+
+outputs {
+    t = sim:time "Time"
+    V = sim:membrane_voltage
+    state = sim:state_variable
+}
