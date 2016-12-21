@@ -1,0 +1,65 @@
+= ABC Parameterization of the Hodgkin-Huxley Model =
+
+This tutorial describes how to download and execute the Approximate Bayesian Computation code
+for inference on the Hodgkin-Huxley model as described in "Hodgkin-Huxley revisited: reparameterization and identifiability analysis of the classic action potential model with approximate Bayesian methods",
+submitted to ''J. R. Soc. Interface'' in 2015.
+
+== Installation ==
+
+This project requires the Functional Curation add-on to Chaste in order to run, which in turn requires the Chaste source tree to be installed.
+To install these dependencies, follow the [wiki:PaperTutorials/FunctionalCuration installation instructions] in the Functional Curation paper tutorial.
+In addition, you will need the dependencies for the new Python implementation detailed at FunctionalCuration/PythonImplementation.
+
+Afterwards, obtain the latest version of the project code from the Chaste repository using:
+{{{
+#!sh
+cd [path_to_Chaste]/projects
+svn checkout --username reviewer https://chaste.cs.ox.ac.uk/svn/chaste/projects/HodgkinHuxleyABC
+}}}
+Use the password supplied at paper submission.
+
+Upon acceptance, the project will be made available for anonymous access.
+{{{
+#!comment
+svn checkout --username anonymous https://chaste.cs.ox.ac.uk/svn/chaste/projects/HodgkinHuxleyABC
+Use your email address as the password for the 'anonymous' account.
+}}}
+
+== Usage ==
+
+Source code for the ABC-SMC parameter fitting algorithm is contained in the `src` folder.
+Python scripts for performing inference on both the simplified and full Hodgkin-Huxley
+model can be found in `tests`. 
+All functional curation protocol files can be found in `tests/protocols`, while the
+annotated CellML model file can be found in the top-level project directory as
+`hodgkin_huxley.cellml`.
+
+A description of important files and their contents follows below:
+ * `src/fitting.py` contains the implementation of ABC-SMC with adaptive error shrinking.
+ * `src/HodgkinHuxley.py` contains accessors for voltage clamp experimental data digitized
+ from the original 1952 publication. Used for all fitting experiments.
+ * `tests/HodgkinHuxleyFittingABC_simple.py` contains the python script for performing
+ inference on the simplified models of potassium (2 parameters) and sodium (4 parameters)
+ conductance.
+ * `tests/HodgkinHuxleyFittingABC.py` contains the python script for performing
+ inference on the full models of potassium (5 parameters) and sodium (9 parameters) conductance.
+ * `tests/ProbabalisticAP` generates graphs of differential response of models parameterized
+ according to a sample ABC posterior estimate of sodium/potassium conductance when subjected
+ to more complex voltage protocols.
+
+To generate ABC posterior estimates for the six-parameter simplified Hodgkin-Huxley model
+as described in the paper, use:
+{{{
+scons projects/HodgkinHuxleyABC/test/HodgkinHuxleyFittingABC_simple.py
+}}}
+To generate ABC posterior estimates for the 14-parameter full Hodgkin-Huxley model
+as described in the paper, use:
+{{{
+scons projects/HodgkinHuxleyABC/test/HodgkinHuxleyFittingABC.py
+}}}
+To see verbose output on the progress of the ABC algorithm, add the flag `no_store_results=1` to the `scons` commands above.
+Note however that this will prevent storing a copy of the output on disk.
+
+'''TODO:''' Check that the above commands run on a fresh install.
+
+'''TODO:''' Information on producing each graph in the paper.
