@@ -7,29 +7,34 @@ submitted to ''J. R. Soc. Interface'' in 2015.
 == Installation ==
 
 This project requires the Functional Curation add-on to Chaste in order to run, which in turn requires the Chaste source tree to be installed.
-To install these dependencies, follow the [wiki:PaperTutorials/FunctionalCuration installation instructions] in the Functional Curation paper tutorial.
-In addition, you will need the dependencies for the new Python implementation detailed at FunctionalCuration/PythonImplementation.
 
-Afterwards, obtain the latest version of the project code from the Chaste repository using:
+TODO: Link to base Chaste install instructions via InstallGuides/UbuntuPackage.
+
+Extra install commands needed as well as the Ubuntu chaste-dependencies package are (on 14.04 at least):
 {{{
 #!sh
-cd [path_to_Chaste]/projects
-svn checkout --username reviewer https://chaste.cs.ox.ac.uk/svn/chaste/projects/HodgkinHuxleyABC
+sudo apt-get install python-dev python-scipy python-numpy cython python-tables python-matplotlib python-numexpr python-pip
+sudo apt-get install scons
+sudo -H pip install dill pathos
 }}}
-Use the password supplied at paper submission.
 
-Upon acceptance, the project will be made available for anonymous access.
+Afterwards, obtain the latest version of all the code from the Chaste repositories using:
 {{{
-#!comment
-svn checkout --username anonymous https://chaste.cs.ox.ac.uk/svn/chaste/projects/HodgkinHuxleyABC
-Use your email address as the password for the 'anonymous' account.
+#!sh
+git clone -b develop https://chaste.cs.ox.ac.uk/git/chaste.git Chaste
+cd Chaste/projects
+svn co https://chaste.cs.ox.ac.uk/svn/chaste/projects/FunctionalCuration --username anonymous --password my.email@domain.com
+svn co https://chaste.cs.ox.ac.uk/svn/chaste/projects/DalySMC --username anonymous --password my.email@domain.com
+# Use your email address as the password for the 'anonymous' account.
 }}}
 
 == Usage ==
 
+This needs updating :)
+
 Source code for the ABC-SMC parameter fitting algorithm is contained in the `src` folder.
 Python scripts for performing inference on both the simplified and full Hodgkin-Huxley
-model can be found in `tests`. 
+model can be found in `tests`.
 All functional curation protocol files can be found in `tests/protocols`, while the
 annotated CellML model file can be found in the top-level project directory as
 `hodgkin_huxley.cellml`.
