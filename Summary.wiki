@@ -1,7 +1,7 @@
 = Two Sequential Monte Carlo Samplers for Exact and Approximate Bayesian Inference on Cardiac Models =
 
 This tutorial describes how to download and execute the Sequential Monte Carlo code
-for inference on the linear, polynomial, and Hodgkin-Huxley models as described in "Two Sequential Monte Carlo Samplers for Exact and Approximate Bayesian Inference on Cardiac Models",
+for inference on the linear, polynomial, and O'Hara-Rudy models as described in "Two Sequential Monte Carlo Samplers for Exact and Approximate Bayesian Inference on Cardiac Models",
 submitted to ''PLoS Comput Biol'' in 2017.
 
 == Installation ==
@@ -30,39 +30,48 @@ svn co https://chaste.cs.ox.ac.uk/svn/chaste/projects/DalySMC --username anonymo
 
 == Usage ==
 
-This needs updating :)
-
-Source code for the ABC-SMC parameter fitting algorithm is contained in the `src` folder.
-Python scripts for performing inference on both the simplified and full Hodgkin-Huxley
-model can be found in `tests`.
 Source code for the SMC parameter fitting algorithms is contained in the `src` folder.
 Python scripts for performing inference on all model problems can be found in `tests`. 
-All functional curation protocol files can be found in `tests/protocols`, while the
-annotated CellML model file can be found in the top-level project directory as
-`hodgkin_huxley.cellml`.
 
-A description of important files and their contents follows below:
- * `src/fitting.py` contains the implementation of ABC-SMC with adaptive error shrinking.
- * `src/HodgkinHuxley.py` contains accessors for voltage clamp experimental data digitized
- from the original 1952 publication. Used for all fitting experiments.
- * `tests/HodgkinHuxleyFittingABC_simple.py` contains the python script for performing
- inference on the simplified models of potassium (2 parameters) and sodium (4 parameters)
- conductance.
- * `tests/HodgkinHuxleyFittingABC.py` contains the python script for performing
- inference on the full models of potassium (5 parameters) and sodium (9 parameters) conductance.
- * `tests/ProbabalisticAP` generates graphs of differential response of models parameterized
- according to a sample ABC posterior estimate of sodium/potassium conductance when subjected
- to more complex voltage protocols.
+An annotated CellML file describing the O'Hara-Rudy model problem can be found in 
+the top-level project directory as `ohara_rudy_2011.cellml`, while functional curation
+protocol files that describe the simulation and recording thereof are contained within
+`tests/protocols`.
 
-To generate ABC posterior estimates for the six-parameter simplified Hodgkin-Huxley model
-as described in the paper, use:
+A description of important files and their contents follows below.
+
+Files relevant for implementation of the samplers:
+ * `src/python/modeling/fitting/approximatebayes` contains the implementation of both Toni and Del Moral SMC algorithms.
+ * `src/python/modeling/fitting/objective/py` contains the implementation of the objective functions used for inference
+
+Files relevant for inference on the linear model:
+ * `test/LinearFitting.py` defines the linear model and all fitting experiments associated with this model as described in the paper.
+
+Files relevant for inference on the polynomial model:
+ * `test/PolynomialFitting.py` defines the polynomial model and all fitting experiments associated with this model as described in the paper.
+
+Files relevant for inference on the O'Hara-Rudy model:
+ * `ohara_rudy_2011.cellml` in the top-level directory contains a CellML description of the equations governing the O'Hara-Rudy model.
+ * `test/protocols/oh_aptrace.txt` contains a functional curation protocol that describes the recording of a single action potential from said model.
+ * `test/protocols/oh_aptrace_sumstats.txt` contains a functional curation protocol that describes the recording of five summary statistics of a single action potential from said model.
+ * `test/data/OHrAPtrace-8-2.dat` contains simulated noisy action potential data that is used for exact inference in the study.
+ * `test/data/OHrSumStats-8-2.dat` contains sumulated noisy summary statistic data that is used for approximate inference in the study.
+ * `test/OHaraRudyFitting.py` defines all fitting experiments associated with this model as described in the paper.
+
+To generate all described posterior estimates for the linear model
+as described in the paper, go to the top-level Chaste directory and use:
 {{{
-scons projects/HodgkinHuxleyABC/test/HodgkinHuxleyFittingABC_simple.py
+scons projects/DalySMC/test/LinearFitting.py
 }}}
-To generate ABC posterior estimates for the 14-parameter full Hodgkin-Huxley model
+To generate all described posterior estimates for the polynomial model
 as described in the paper, use:
 {{{
-scons projects/HodgkinHuxleyABC/test/HodgkinHuxleyFittingABC.py
+scons projects/DalySMC/test/PolynomialFitting.py
+}}}
+To generate all described posterior estimates for the O'Hara-Rudy model
+as described in the paper, use:
+{{{
+scons projects/DalySMC/test/OHaraRudyFitting.py
 }}}
 To see verbose output on the progress of the ABC algorithm, add the flag `no_store_results=1` to the `scons` commands above.
 Note however that this will prevent storing a copy of the output on disk.
