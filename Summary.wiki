@@ -1,8 +1,8 @@
-= ABC Parameterization of the Hodgkin-Huxley Model =
+= Two Sequential Monte Carlo Samplers for Exact and Approximate Bayesian Inference on Cardiac Models =
 
-This tutorial describes how to download and execute the Approximate Bayesian Computation code
-for inference on the Hodgkin-Huxley model as described in "Hodgkin-Huxley revisited: reparameterization and identifiability analysis of the classic action potential model with approximate Bayesian methods",
-submitted to ''J. R. Soc. Interface'' in 2015.
+This tutorial describes how to download and execute the Sequential Monte Carlo code
+for inference on the linear, polynomial, and Hodgkin-Huxley models as described in "Two Sequential Monte Carlo Samplers for Exact and Approximate Bayesian Inference on Cardiac Models",
+submitted to ''PLoS Comput Biol'' in 2017.
 
 == Installation ==
 
@@ -18,6 +18,7 @@ sudo apt-get install scons
 sudo -H pip install dill pathos
 }}}
 
+Upon acceptance, the project will be made available for anonymous access.
 Afterwards, obtain the latest version of all the code from the Chaste repositories using:
 {{{
 #!sh
@@ -26,6 +27,9 @@ cd Chaste/projects
 svn co https://chaste.cs.ox.ac.uk/svn/chaste/projects/FunctionalCuration --username anonymous --password my.email@domain.com
 svn co https://chaste.cs.ox.ac.uk/svn/chaste/projects/DalySMC --username anonymous --password my.email@domain.com
 # Use your email address as the password for the 'anonymous' account.
+#!comment
+svn checkout --username anonymous https://chaste.cs.ox.ac.uk/svn/chaste/projects/DalySMC
+Use your email address as the password for the 'anonymous' account.
 }}}
 
 == Usage ==
@@ -35,6 +39,8 @@ This needs updating :)
 Source code for the ABC-SMC parameter fitting algorithm is contained in the `src` folder.
 Python scripts for performing inference on both the simplified and full Hodgkin-Huxley
 model can be found in `tests`.
+Source code for the SMC parameter fitting algorithms is contained in the `src` folder.
+Python scripts for performing inference on all model problems can be found in `tests`. 
 All functional curation protocol files can be found in `tests/protocols`, while the
 annotated CellML model file can be found in the top-level project directory as
 `hodgkin_huxley.cellml`.
