@@ -7,8 +7,7 @@ submitted to ''PLoS Comput Biol'' in 2017.
 == Installation ==
 
 This project requires the Functional Curation add-on to Chaste in order to run, which in turn requires the Chaste source tree to be installed.
-
-TODO: Link to base Chaste install instructions via InstallGuides/UbuntuPackage.
+Instructions for this installation can be found for a variety of operating systems under InstallGuides/.
 
 Extra install commands needed as well as the Ubuntu chaste-dependencies package are (on 14.04 at least):
 {{{
@@ -18,18 +17,15 @@ sudo apt-get install scons
 sudo -H pip install dill pathos
 }}}
 
-Upon acceptance, the project will be made available for anonymous access.
 Afterwards, obtain the latest version of all the code from the Chaste repositories using:
 {{{
 #!sh
 git clone -b develop https://chaste.cs.ox.ac.uk/git/chaste.git Chaste
 cd Chaste/projects
+
+# Use your email address as the password for the 'anonymous' account.
 svn co https://chaste.cs.ox.ac.uk/svn/chaste/projects/FunctionalCuration --username anonymous --password my.email@domain.com
 svn co https://chaste.cs.ox.ac.uk/svn/chaste/projects/DalySMC --username anonymous --password my.email@domain.com
-# Use your email address as the password for the 'anonymous' account.
-#!comment
-svn checkout --username anonymous https://chaste.cs.ox.ac.uk/svn/chaste/projects/DalySMC
-Use your email address as the password for the 'anonymous' account.
 }}}
 
 == Usage ==
@@ -71,6 +67,3 @@ scons projects/HodgkinHuxleyABC/test/HodgkinHuxleyFittingABC.py
 To see verbose output on the progress of the ABC algorithm, add the flag `no_store_results=1` to the `scons` commands above.
 Note however that this will prevent storing a copy of the output on disk.
 
-'''TODO:''' Check that the above commands run on a fresh install.
-
-'''TODO:''' Information on producing each graph in the paper.
