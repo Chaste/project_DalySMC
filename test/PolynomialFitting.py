@@ -7,12 +7,13 @@ except ImportError:
 from modeling.utility import plotting, io
 
 # Parameter fitting framework imports
-from modeling.fitting.objective import SquareError
+from modeling.fitting.objective import SquareError,LogLikGauss
 from modeling.fitting.algorithm import ParameterFittingTask
 from modeling.fitting.approximatebayes import ABCSMCAdaptive, ABCSMCDelMoral
 from modeling.simulation.experiment import Experiment
 import modeling.language.distributions as Dist
 from modeling.language.kernels import Kernel
+from modeling.utility.io import ReadParameterDistribution, WriteParameterDistribution
 
 import numpy
 sampleSize = 301
@@ -62,13 +63,13 @@ class PolynomialFitting(unittest.TestCase):
 
 			outfile = algName+"Poly"+str(ndims)+".out"
 			algArgs['outputFile'] = outfile
-			wtfile = algName+"Poly"+str(ndims)+".out"
+			wtfile = algName+"PolyWts"+str(ndims)+".out"
 			algArgs['weightFile'] = wtfile
 
 			post = algorithm(task,args=algArgs)
-			all_results.append(post)
+			WriteParameterDistribution(outfile,post)
 
-			plotting.PlotDiscreteMarginals(post,twoDim=True,trueValue=trueValues,
+			plotting.PlotDiscreteMarginals(post,twoDim=False,trueValue=trueValues,
 				dest='PolynomialMarginals'+algName+str(ndims),nbins=10)
 
 		for result in all_results:
@@ -89,6 +90,23 @@ class PolynomialFitting(unittest.TestCase):
 			'minESS':0.,'resampleESS':0.5}
 
 		self.polynomialFitting(objFun,alg,"DelMoral",algArgs)
+
+	def TestDelMoralProb(self):
+		objFun = SquareError()
+		alg = ABCSMCDelMoral()
+
+		def acceptFun(task,params,thresh):
+			paramCopy = params.copy()
+			if 'obj:std' in params:
+				paramCopy['obj:std'] = paramCopy['obj:std']*thresh
+			else:
+				paramCopy['obj:std'] = 1.0*thresh
+			return numpy.exp(-task.calculateObjective(paramCopy)/2)
+
+		algArgs = {"cutoff":0.01,'minErr':1.0,'postSize':1000,'tune':True,'alpha':0.2,
+			'minESS':0.,'resampleESS':0.5,"e0":100,"acceptFun":acceptFun}
+
+		self.polynomialFitting(objFun,alg,"DelMoralProb",algArgs)
 
 
 class PolynomialExperiment(Experiment):
