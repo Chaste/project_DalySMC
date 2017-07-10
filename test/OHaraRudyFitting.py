@@ -16,7 +16,7 @@ from fc.language import values as V
 
 import numpy
 import matplotlib.pyplot as plt
-import os, sys
+import os, sys, time
 
 import dill
 import inspect, traceback
@@ -79,6 +79,11 @@ class OHaraRudyFitting(unittest.TestCase):
 		modelFile = "projects/DalySMC/ohara_rudy_2011.cellml"
 		experiment = FunctionalCurationExperiment(protoFile,modelFile)
 
+		# Time the length of a simulation
+		t_start = time.time()
+		experiment.simulate()
+		print "SIMULATION TIME:",protoFile,time.time()-t_start
+
 		if outputs == {}:
 			print "No outputs specified - defaulting to voltage"
 			outputs = ['V']
@@ -108,8 +113,10 @@ class OHaraRudyFitting(unittest.TestCase):
 		if "sumstats" in protoFile:
 			algArgs['minErr'] = task.calculateObjective(trueValues)
 			print "ABC will terminate at: ", algArgs['minErr']
-
+		# Record and report execution time
+		t_start = time.time()
 		results = algorithm(task,args=algArgs)
+		print "EXECUTION TIME:",algName,time.time()-t_start
 		#results = io.ReadParameterDistribution(algArgs['outputFile'])
 
 		# Skip plotting if algorithm is an optimizer

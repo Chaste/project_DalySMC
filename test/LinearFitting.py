@@ -14,7 +14,10 @@ from modeling.simulation.experiment import Experiment
 import modeling.language.distributions as Dist
 from modeling.language.kernels import Kernel
 
-import numpy
+import numpy,time
+
+# Required for quantile-quantile plots
+from scipy.stats import norm
 
 sampleSize = 301
 
@@ -65,7 +68,10 @@ class LinearFitting(unittest.TestCase):
 		for i in range(repeats):
 			# Undo any scaling that may have been applied by MCMC
 			kernel.scale = 1.0 
+
+			t_start = time.time()
 			results.append(algorithm(task,args=algArgs))
+			print "EXECUTION TIME:",algName,time.time()-t_start
 
 			plotting.PlotDiscreteMarginals(results[i],twoDim=False,trueValue=trueValue,
 				dest='SimpleLinearMarginals'+algName+str(i),nbins=50)
