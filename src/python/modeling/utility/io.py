@@ -40,7 +40,7 @@ def ReadParameterDistribution(fileName,delim='\t',weightCol=None):
 	- Weights specified in final column under heading "WEIGHTS"
 '''
 def WriteParameterDistribution(fileName,distribution,header='',delim='\t'):
-	csvfile = open(fileName,'w')
+	csvfile = open(fileName,'w+')
 
 	# TODO: Make sure each new line of header is marked by "#"
 	if header != '':

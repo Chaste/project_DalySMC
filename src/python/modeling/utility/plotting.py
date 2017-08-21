@@ -43,7 +43,7 @@ def Plot1DResiduals(distribution,experiment,data,outputs=None,ndraws=10,dest='re
 	- 'ppf': inverse CDF of a (univariate) distribution to be compared against
 	- 'nquantiles': number of quantiles. Defaults to number of particles in 'distribution.'
 '''
-def PlotQQ(outputs,weights=None,ppf=norm.ppf,nquantiles=None,dest='qqplot'):
+def PlotQQ(outputs,weights=None,ppf=norm.ppf,nquantiles=None,dest='qqplot',shift=False):
 	# Check if one or multiple distributions are input
 	if not hasattr(outputs[0],'__iter__'):
 		outputs = [outputs]
@@ -106,8 +106,15 @@ def PlotQQ(outputs,weights=None,ppf=norm.ppf,nquantiles=None,dest='qqplot'):
 	xmin,xmax,ymin,ymax = plt.axis()
 	plt.axis((y1-(yn-y1)/2,yn+(yn-y1)/2,y1-(yn-y1)/2,yn+(yn-y1)/2))
 
+	# Set behavior for x-axis shift
+	ax = plt.gca()
+	ax.get_xaxis().get_major_formatter().set_useOffset(shift)
+	ax.get_yaxis().get_major_formatter().set_useOffset(shift)
+
 	plt.xlabel("Empirical Quantiles")
 	plt.ylabel("Theoretical Quantiles")
+
+	plt.tight_layout()
 
 	plt.savefig(dest+'.eps',format='eps',dpi=1000)
 
@@ -284,7 +291,7 @@ def PlotHeatMap(distribution,dest='heatmap',include=None,bins=50,plotRange=None,
 	- 'restrict': specified subset of parameters to plot; defaults to all
 '''
 def PlotDiscreteMarginals(distribution,dest='marginal',trueValue=None,errorBars=None,
-	twoDim=False,restrict=None,nbins=10):
+	twoDim=False,restrict=None,nbins=10,shift=False):
 	if restrict == None:
 		restrict = distribution.particles[0].keys()
 
@@ -303,11 +310,11 @@ def PlotDiscreteMarginals(distribution,dest='marginal',trueValue=None,errorBars=
 			densities.append(distribution.weights[i])
 
 	if not twoDim:
-		_plotHistos(marginals,densities,dest,trueValue,errorBars,nbins)
+		_plotHistos(marginals,densities,dest,trueValue,errorBars,nbins,shift)
 	else:
-		_plotBiplots(marginals,densities,dest,trueValue,errorBars,nbins)
+		_plotBiplots(marginals,densities,dest,trueValue,errorBars,nbins,shift)
 
-def _plotHistos(marginals,densities,dest,trueValue=None,errorBars=None,nbins=10):
+def _plotHistos(marginals,densities,dest,trueValue=None,errorBars=None,nbins=10,shift=False):
 	for parameter,values in marginals.iteritems():
 		
 		fig = plt.figure()
@@ -335,13 +342,17 @@ def _plotHistos(marginals,densities,dest,trueValue=None,errorBars=None,nbins=10)
 			plt.axis((x1,x2,y1,y2))
 			print parameter,str(x1),str(x2),trueValue[parameter]
 
+		# Set behavior for x-axis shift
+		ax = plt.gca()
+		ax.get_xaxis().get_major_formatter().set_useOffset(shift)
+
 		fname = dest+"_"+parameter+".eps"
 		locs, labels = plt.xticks()
 		plt.setp(labels, rotation=30)
 		plt.tight_layout()
 		plt.savefig(fname,format='eps',dpi=1000)
 
-def _plotBiplots(marginals,densities,dest,trueValue=None,errorBars=None,nbins=10):
+def _plotBiplots(marginals,densities,dest,trueValue=None,errorBars=None,nbins=10,shift=False):
 	nparams = len(marginals)
 
 	#fig,axarr = plt.subplots(nparams,nparams)
