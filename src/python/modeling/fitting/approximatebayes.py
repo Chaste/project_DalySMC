@@ -227,13 +227,15 @@ class ABCSMCAdaptive(Algorithm.ParameterFittingAlgorithm):
 			print "Succeeded in "+str(numIters)+" iterations"
 
 		print "Calculating weights"
+		wt_start = time.time() # Print out time spent calculating
 		# Calculate weight on accepted particles and store
 		if parallel:
 			pool = mp.Pool(cpus)
 			updatedWeights = pool.map(cls.calculateWeight,[(p,task.prior,post,kern,acceptFun,task,thresh) for p in updatedParticles])
 		else:
 			updatedWeights = map(cls.calculateWeight,[(p,task.prior,post,kern,acceptFun,task,thresh) for p in updatedParticles])
-		print "Done with weights"
+		wt_dur = time.time()-wt_start
+		print "Done with weights ("+str(wt_dur)+" seconds)"
 
 		# Scale kernel for next iteration based on acceptance of current iteration
 		# NOTE: Should preemptively scale kernel before sampling current iteration, perhaps based on a fixed number of samples preceding true sampling
@@ -448,10 +450,4 @@ class ABCSMCDelMoral(ABCSMCAdaptive):
 '''
 
 def WritePosteriorSummary(outputFileHandle,post,t_spent,maxerr):
-
-	header = '\n'.join(["Time spent (s): "+str(t_spent),
-		"Final epsilon: "+str(maxerr),
-		"Mean: "+str(post.mean()),
-		"90% CI: "+str(post.ci(0.9))])
-
-	io.WriteParameterDistribution(outputFileHandle,post,header=header)
+	io.WriteParameterDistribution(outputFileHandle,post)

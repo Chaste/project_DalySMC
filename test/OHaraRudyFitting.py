@@ -149,7 +149,7 @@ class OHaraRudyFitting(unittest.TestCase):
 		return results, task
 	
 	def TestDelMoralProb_13(self):
-		for i in range(10):
+		for i in range(1):
 			OUTPUT_FILE = os.path.join(OUTPUT_DIR,'OHrDM_Full'+str(i)+'.out')
 			LOG_FILE = os.path.join(OUTPUT_DIR,'OHrDM_Full'+str(i)+'.log')
 			TRACE_FILE = os.path.join(OUTPUT_DIR,'OHrDM_Full_postMeanTrace'+str(i)+'.eps')
@@ -158,7 +158,7 @@ class OHaraRudyFitting(unittest.TestCase):
 			self.RunDelMoralProb(OUTPUT_DIR,OUTPUT_FILE,LOG_FILE,TRACE_FILE,RESTRICT)
 
 	def TestDelMoralProb_5(self):
-		for i in range(10):
+		for i in range(1):
 			OUTPUT_FILE = os.path.join(OUTPUT_DIR,'OHrDM_Top5'+str(i)+'.out')
 			LOG_FILE = os.path.join(OUTPUT_DIR,'OHrDM_Top5'+str(i)+'.log')
 			TRACE_FILE = os.path.join(OUTPUT_DIR,'OHrDM_Top5_postMeanTrace'+str(i)+'.eps')
@@ -226,7 +226,7 @@ class OHaraRudyFitting(unittest.TestCase):
 		plt.savefig(TRACE_FILE,format='eps',dpi=300)
 
 	def TestDelMoral01_13(self):
-		for i in range(10):
+		for i in range(1):
 			OUTPUT_FILE = os.path.join(OUTPUT_DIR,'OHrDM_SS_Full'+str(i)+'.out')
 			LOG_FILE = os.path.join(OUTPUT_DIR,'OHrDM_SS_Full'+str(i)+'.log')
 			RESTRICT = None
@@ -234,7 +234,7 @@ class OHaraRudyFitting(unittest.TestCase):
 			self.RunDelMoral01(OUTPUT_DIR,OUTPUT_FILE,LOG_FILE,RESTRICT)
 
 	def TestDelMoral01_5(self):
-		for i in range(10):
+		for i in range(1):
 			OUTPUT_FILE = os.path.join(OUTPUT_DIR,'OHrDM_SS_Top5'+str(i)+'.out')
 			LOG_FILE = os.path.join(OUTPUT_DIR,'OHrDM_SS_Top5'+str(i)+'.log')
 			RESTRICT = ['oxmeta:membrane_fast_sodium_current_conductance',

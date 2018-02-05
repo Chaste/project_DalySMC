@@ -2,7 +2,7 @@
 
 This tutorial describes how to download and execute the Sequential Monte Carlo code
 for inference on the linear, polynomial, and O'Hara-Rudy models as described in "Two Sequential Monte Carlo Samplers for Exact and Approximate Bayesian Inference on Cardiac Models",
-submitted to ''PLoS Comput Biol'' in 2017.
+Accepted by ''Journal of the Royal Society Interface'' in 2017.
 
 == Installation ==
 

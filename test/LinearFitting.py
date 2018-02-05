@@ -98,6 +98,7 @@ class LinearFitting(unittest.TestCase):
 	# - mode*10:	produces normal distribution wider than theoretical,because algorithm 
 	#				terminates with eps>1 due to exceeding max iterations
 	# - mode*0.1:	produces nearly uniform distribution
+	@unittest.skip("Skip for now - timing weight calculation for Toni01")
 	def TestLinearSimpleABCToniProb(self):
 		objFun = SquareError()
 		alg = ABCSMCAdaptive()
@@ -122,6 +123,7 @@ class LinearFitting(unittest.TestCase):
 		print results[0].mean(), results[0].ci(0.9)
 
 	# ABC with a O(N) calculation of weights and a 0-1 acceptance kernel
+	@unittest.skip("Skip for now - timing weight calculation for Toni01")
 	def TestLinearSimpleABCDelMoral01(self):
 		objFun = SquareError()
 		alg = ABCSMCDelMoral()
@@ -132,6 +134,7 @@ class LinearFitting(unittest.TestCase):
 		print results[0].mean(), results[0].ci(0.9)
 
 	# ABC with O(N) calculation of weights and a probabilistic acceptance kernel
+	@unittest.skip("Skip for now - timing weight calculation for Toni01")
 	def TestLinearSimpleABCDelMoralProb(self):
 		objFun = SquareError()
 		alg = ABCSMCDelMoral()
@@ -151,6 +154,7 @@ class LinearFitting(unittest.TestCase):
 		print results[0].mean(), results[0].ci(0.9)
 
 	# Compare uniformity of Del Moral posteriors using 0-1 acceptance over a range of alpha
+	@unittest.skip("Skip for now - timing weight calculation for Toni01")
 	def TestDelMoralAlpha(self):
 		# Run over a range of alphas
 		objFun = SquareError()
